@@ -1,5 +1,5 @@
 (function() {
-    const CHAT_URL = "https://visavas.github.io/glowry-new/";
+    const CHAT_URL = "https://x10aistudio.github.io/glowry/";
     
     const LOGO = `
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" viewBox="0 0 256 256">
