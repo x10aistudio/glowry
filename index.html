@@ -11,8 +11,8 @@
         #msgs { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; background: #fafafa; }
         .msg { padding: 14px 18px; border-radius: 20px; font-size: 14px; max-width: 85%; white-space: pre-wrap; line-height: 1.6; }
         .user { background: #E84F2F; color: white; align-self: flex-end; border-bottom-right-radius: 6px; }
-        .ai { background: #fff; color: #333; align-self: flex-start; border-bottom-left-radius: 6px; border: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .card { background: white; border: 1px solid #eee; border-radius: 14px; padding: 14px; margin-top: 10px; width: 200px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.06); transition: all 0.2s ease; }
+        .ai { background: #fff; color: #333; align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .card { background: white; border: 1px solid #eee; border-radius: 14px; padding: 14px; margin-top: 10px; width: 220px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.08); transition: all 0.2s ease; }
         .card:hover { border-color: #E84F2F; transform: translateY(-2px); }
         .card-title { display: block; color: #E84F2F; font-size: 14px; font-weight: bold; }
         .card-sub { font-size: 11px; color: #999; margin-top: 4px; display: block; }
@@ -30,11 +30,11 @@
 </head>
 <body>
     <div id="win">
-<div id="head">
-    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="white" viewBox="0 0 256 256"><path d="M214.86,180.12a8,8,0,0,1-11,2.74L136,142.13V216a8,8,0,0,1-16,0V142.13L52.12,182.86a8,8,0,1,1-8.23-13.72L112.45,128,43.89,86.86a8,8,0,1,1,8.23-13.72L120,113.87V40a8,8,0,0,1,16,0v73.87l67.88-40.73a8,8,0,1,1,8.23,13.72L143.55,128l68.56,41.14A8,8,0,0,1,214.86,180.12Z"></path></svg>
-    <span style="flex:1;">Glowry AI Assistant</span>
-    <button id="close-btn" onclick="window.parent.postMessage('close-chat','*')" style="background:none;border:none;color:white;font-size:24px;cursor:pointer;padding:0 8px;">✕</button>
-</div>
+        <div id="head">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="white" viewBox="0 0 256 256"><path d="M214.86,180.12a8,8,0,0,1-11,2.74L136,142.13V216a8,8,0,0,1-16,0V142.13L52.12,182.86a8,8,0,1,1-8.23-13.72L112.45,128,43.89,86.86a8,8,0,1,1,8.23-13.72L120,113.87V40a8,8,0,0,1,16,0v73.87l67.88-40.73a8,8,0,1,1,8.23,13.72L143.55,128l68.56,41.14A8,8,0,0,1,214.86,180.12Z"></path></svg>
+            <span style="flex:1;">Health Expert AI</span>
+            <button id="close-btn" onclick="window.parent.postMessage('close-chat','*')" style="background:none;border:none;color:white;font-size:24px;cursor:pointer;padding:0 8px;">✕</button>
+        </div>
         <div id="msgs"><div class="msg ai">สวัสดีค่ะ ยินดีต้อนรับสู่ Glowry นะคะ ✨ มีอะไรให้ช่วยแนะนำเมนูสุขภาพไหมคะ?</div></div>
         <div id="input-area">
             <input id="in" placeholder="ถามเราได้เลยค่ะ..." autocomplete="off">
@@ -47,6 +47,7 @@
         const input = document.getElementById('in');
         const btn = document.getElementById('btn');
         const PROXY = "https://glowry.x10-aistudio.workers.dev/api";
+        const BASE_DOMAIN = "https://shopdemo5.capchat.live"; // ✅ FIXED DOMAIN
 
         const MENU_SLUGS = {
             "กรีน บาลานซ์ โบวล์": "green-balance-bowl",
@@ -101,9 +102,12 @@
             menuTitles.forEach(title => {
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.innerHTML = '<span class="card-title">' + title + '</span><span class="card-sub">กดเพื่อดูเมนูนี้</span>';
-                const slug = MENU_SLUGS[title] || title.toLowerCase().replace(/\s+/g, '-');
-                card.onclick = () => window.top.location.href = '/menu/' + slug;
+                card.innerHTML = '<span class="card-title">' + title + '</span><span class="card-sub">กดเพื่อดูรายละเอียด</span>';
+                const slug = MENU_SLUGS[title] || title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+                
+                // ✅ UPDATED ONCLICK TO USE FULL URL
+                card.onclick = () => window.top.location.href = BASE_DOMAIN + '/menu/' + slug;
+                
                 wrapper.appendChild(card);
             });
 
